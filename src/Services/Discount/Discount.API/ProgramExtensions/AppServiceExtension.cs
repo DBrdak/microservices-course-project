@@ -15,10 +15,10 @@ namespace Discount.API.ProgramExtensions
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog.API", Version = "v1" });
             });
-
-            services.Configure<DbSettings>(config.GetSection("DbSettings"));
+            
             services.AddSingleton<DataContext>();
             services.AddScoped<IDiscountRepository, DiscountRepository>();
+            
 
             return services;
         }

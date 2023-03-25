@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Data;
@@ -6,16 +7,16 @@ namespace Discount.API.Data
 {
     public class DataContext
     {
-        private readonly DbSettings _dbSettings;
+        private readonly IConfiguration _configuration;
 
-        public DataContext(IOptions<DbSettings> dbSettings)
+        public DataContext(IConfiguration configuration)
         {
-            _dbSettings = dbSettings.Value;
+            _configuration = configuration;
         }
 
-        public IDbConnection CreateConnection()
+        public NpgsqlConnection CreateConnection()
         {
-            var connectionString = $"Host={_dbSettings.Server}; Port={_dbSettings.Port}; Database={_dbSettings.Database}; Username={_dbSettings.UserId}; Password={_dbSettings.Password};";
+            var connectionString = _configuration.GetValue<string>("DatabaseSettings:ConnectionString");
             return new NpgsqlConnection(connectionString);
         }
     }

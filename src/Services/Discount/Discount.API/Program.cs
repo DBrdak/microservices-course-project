@@ -1,4 +1,5 @@
 
+using Discount.API.Data;
 using Discount.API.ProgramExtensions;
 
 namespace Discount.API
@@ -22,6 +23,8 @@ namespace Discount.API
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MigrateDatabase<DataContext>();
 
             app.Run();
         }
