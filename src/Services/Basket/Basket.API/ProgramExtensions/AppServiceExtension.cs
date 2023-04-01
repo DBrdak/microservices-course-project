@@ -1,3 +1,4 @@
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Microsoft.OpenApi.Models;
 
@@ -20,6 +21,7 @@ namespace Basket.API.ProgramExtensions
             });
 
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddSingleton<DiscountGrpcService>();
 
             return services;
         }
