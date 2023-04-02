@@ -1,5 +1,7 @@
 
 using Basket.API.ProgramExtensions;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Net;
 
 namespace Basket.API
 {
@@ -10,6 +12,13 @@ namespace Basket.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddServices(builder.Configuration);
+
+            //builder.WebHost.UseKestrel(options =>
+            //{
+            //    options.ListenAnyIP(8003, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
+            //    options.Listen(IPAddress.Any, 80, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
+            //    options.Listen(IPAddress.Any, 5003, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
+            //});
 
             var app = builder.Build();
             

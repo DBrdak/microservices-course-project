@@ -1,5 +1,7 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
+using Discount.Grpc.Protos;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace Basket.API.ProgramExtensions
@@ -20,8 +22,14 @@ namespace Basket.API.ProgramExtensions
                 opt.Configuration = config.GetValue<string>("CacheSettings:ConnectionString");
             });
 
+            var s = config.GetValue<string>("GrpcSettings:DiscountUrl");
+
             services.AddScoped<IBasketRepository, BasketRepository>();
-            services.AddSingleton<DiscountGrpcService>();
+            services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(o =>
+            {
+                o.Address = new Uri(config.GetValue<string>("GrpcSettings:DiscountUrl"));
+            });
+            services.AddScoped<DiscountGrpcService>();
 
             return services;
         }
