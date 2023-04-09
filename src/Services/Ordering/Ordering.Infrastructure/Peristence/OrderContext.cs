@@ -12,11 +12,12 @@ namespace Ordering.Infrastructure.Peristence
 {
     public class OrderContext : DbContext
     {
-        public OrderContext(DbContextOptions<OrderContext> options) : base(options)
-        {
-        }
 
         public DbSet<Order> Orders { get; set; }
+
+        public OrderContext(DbContextOptions options) : base(options)
+        {
+        }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
@@ -36,6 +37,15 @@ namespace Ordering.Infrastructure.Peristence
             }
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Order>()
+                .ToTable("Orders")
+                .Property(x => x.TotalPrice).HasPrecision(18,4);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ordering.Infrastructure.Peristence
 {
@@ -12,7 +13,7 @@ namespace Ordering.Infrastructure.Peristence
     {
         public static async Task SeedAsync(OrderContext orderContext, ILogger<OrderContextSeed> logger)
         {
-            if (!orderContext.Database.EnsureCreated() || !orderContext.Orders.Any())
+            if (!await orderContext.Database.EnsureCreatedAsync() || !orderContext.Orders.Any() || !orderContext.Database.CanConnect())
             {
                 orderContext.Orders.AddRange(GetPreconfiguredOrders());
                 await orderContext.SaveChangesAsync();
