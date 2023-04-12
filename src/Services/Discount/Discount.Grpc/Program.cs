@@ -1,6 +1,5 @@
-using Discount.API.ProgramExtensions;
-using Discount.Grpc.Data;
 using Discount.Grpc.ProgramExtensions;
+using Discount.Grpc.Data;
 using Discount.Grpc.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Net;

@@ -1,7 +1,7 @@
 ﻿using Discount.Grpc.Data;
 using Npgsql;
 
-namespace Discount.API.ProgramExtensions
+namespace Discount.Grpc.ProgramExtensions
 {
     public static class HostExtensions
     {

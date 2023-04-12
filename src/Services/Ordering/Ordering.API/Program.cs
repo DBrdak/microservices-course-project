@@ -1,13 +1,11 @@
+using Ordering.API.ProgramExtenstions;
 using Ordering.Application;
 using Ordering.Extenstions;
 using Ordering.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddServices(builder.Configuration);
 builder.Services.RegisterApplicationServices();
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
 

@@ -47,5 +47,15 @@ namespace Basket.API.Controllers
             await _repository.DeleteBasket(userName);
             return Ok();
         }
+
+        [HttpPost("[action]")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+        { 
+            var result = await _repository.Checkout(basketCheckout);
+
+            return result ? Ok() : BadRequest();
+        }
     }
 }

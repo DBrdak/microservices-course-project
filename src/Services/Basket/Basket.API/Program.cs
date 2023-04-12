@@ -13,13 +13,6 @@ namespace Basket.API
 
             builder.Services.AddServices(builder.Configuration);
 
-            //builder.WebHost.UseKestrel(options =>
-            //{
-            //    options.ListenAnyIP(8003, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
-            //    options.Listen(IPAddress.Any, 80, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
-            //    options.Listen(IPAddress.Any, 5003, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
-            //});
-
             var app = builder.Build();
             
             if (app.Environment.IsDevelopment())

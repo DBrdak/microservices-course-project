@@ -9,14 +9,14 @@
       }
     },
     "Catalog.API": {
+      "applicationUrl": "http://localhost:5000",
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
+      "dotnetRunMessages": "true",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:5000"
+      "launchBrowser": true,
+      "launchUrl": "swagger"
     },
     "Docker": {
       "commandName": "Docker",

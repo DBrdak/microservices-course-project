@@ -1,14 +1,16 @@
+using System.Reflection;
 using Basket.API.GrpcServices;
+using Basket.API.Mappings;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
-using Microsoft.Extensions.DependencyInjection;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 
 namespace Basket.API.ProgramExtensions
 {
     public static class AppServiceExtension
     {
-        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
 
@@ -19,17 +21,25 @@ namespace Basket.API.ProgramExtensions
 
             services.AddStackExchangeRedisCache(opt =>
             {
-                opt.Configuration = config.GetValue<string>("CacheSettings:ConnectionString");
+                opt.Configuration = configuration["CacheSettings:ConnectionString"];
             });
-
-            var s = config.GetValue<string>("GrpcSettings:DiscountUrl");
 
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(o =>
             {
-                o.Address = new Uri(config.GetValue<string>("GrpcSettings:DiscountUrl"));
+                o.Address = new Uri(configuration["GrpcSettings:DiscountUrl"] ??
+                                    throw new InvalidOperationException("Dicounnt URL not found"));
             });
             services.AddScoped<DiscountGrpcService>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddMassTransit(config =>
+            {
+                config.UsingRabbitMq((context, configMq) =>
+                {
+                    configMq.Host(configuration["EventBusSettings:HostAddress"]);
+                });
+            });
 
             return services;
         }
