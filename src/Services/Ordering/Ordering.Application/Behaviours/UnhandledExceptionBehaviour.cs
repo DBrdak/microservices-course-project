@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Ordering.Application.Behaviours
+namespace Ordering.Application.Behaviours;
+
+public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
-        where TRequest : IRequest<TResponse>
+    private readonly ILogger<TRequest> _logger;
+
+    public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
     {
-        private readonly ILogger<TRequest> _logger;
+        _logger = logger;
+    }
 
-        public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        try
         {
-            _logger = logger;
+            return await next();
         }
-
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        catch (Exception e)
         {
-            try
-            {
-                return await next();
-            }
-            catch (Exception e)
-            {
-                var requestName = typeof(TRequest).Name;
+            var requestName = typeof(TRequest).Name;
 
-                _logger.LogError(e, $"Application request: unhandled exception for request {requestName} {request}");
-                throw;
-            }
+            _logger.LogError(e, $"Application request: unhandled exception for request {requestName} {request}");
+            throw;
         }
     }
 }

@@ -1,24 +1,19 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Npgsql;
-using System.Data;
 
-namespace Discount.Grpc.Data
+namespace Discount.Grpc.Data;
+
+public class DataContext
 {
-    public class DataContext
+    private readonly IConfiguration _configuration;
+
+    public DataContext(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
+        _configuration = configuration;
+    }
 
-        public DataContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public NpgsqlConnection CreateConnection()
-        {
-            var connectionString = _configuration.GetValue<string>("DatabaseSettings:ConnectionString");
-            return new NpgsqlConnection(connectionString);
-        }
+    public NpgsqlConnection CreateConnection()
+    {
+        var connectionString = _configuration.GetValue<string>("DatabaseSettings:ConnectionString");
+        return new NpgsqlConnection(connectionString);
     }
 }
-
