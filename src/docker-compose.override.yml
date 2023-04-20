@@ -118,3 +118,15 @@ services:
       - rabbitmq
     ports:
       - "8003:80"
+
+  ocelotapigw:
+    container_name: ocelotapigw
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - catalog.api
+      - discount.grpc
+      - basket.api
+      - ordering.api
+    ports:
+      - "8010:80"
