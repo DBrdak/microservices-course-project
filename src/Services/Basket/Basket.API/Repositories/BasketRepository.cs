@@ -25,7 +25,10 @@ public class BasketRepository : IBasketRepository
         var basket = await _cache.GetStringAsync(userName);
 
         if (string.IsNullOrEmpty(basket))
-            return new ShoppingCart();
+            return new ShoppingCart
+            {
+                UserName = userName
+            };
 
         return JsonConvert.DeserializeObject<ShoppingCart>(basket);
     }

@@ -144,3 +144,13 @@ services:
     ports:
       - "8004:80"
 
+
+  aspnetrunbasics:
+    container_name: aspnetrunbasics
+    depends_on:
+      - ocelotapigw
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:GatewayAddress=http://ocelotapigw"
+    ports:
+      - "8005:80"
